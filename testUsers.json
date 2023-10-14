@@ -1,0 +1,28 @@
+[
+    {
+        "name": "seller with products",
+        "id": "385544817"
+    },
+    {
+        "id": 1505134882,
+        "email": "test_user_2127571305@testuser.com",
+        "nickname": "TESTUSER2127571305",
+        "site_status": "active",
+        "password": "tPx1NKDLm0"
+    },
+    {
+        "id": 1503789695,
+        "email": "test_user_1146363591@testuser.com",
+        "nickname": "TESTUSER1146363591",
+        "site_status": "active",
+        "password": "cw2G0oxj0D"
+    },
+    {
+        "pais": "usuario CHILE",
+        "id": 1508428719,
+        "email": "test_user_1209613088@testuser.com",
+        "nickname": "TESTUSER1209613088",
+        "site_status": "active",
+        "password": "erHOzvw8Ne"
+    }
+]
