@@ -113,13 +113,13 @@ export class NotificationsService {
         // });
         const response = 'respuesta de chati';
 
-        await this.mercadolibreService.answerQuestion(
-          {
-            question_id: questionId,
-            text: response,
-          },
-          user,
-        );
+        // await this.mercadolibreService.answerQuestion(
+        //   {
+        //     question_id: questionId,
+        //     text: response,
+        //   },
+        //   user,
+        // );
 
         break;
       } catch (error) {
