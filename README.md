@@ -1,73 +1,72 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## Tech Stack
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+NestJS, MongoDB, Redis.
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+API que integra ChattinAI con MercadoLibre.
+
+## Flujo de auth
+
+Redirigir al usuario al enlace de autenticación de la aplicación registrada en MELI enviando el _id_ del usuario de chattin en el parámetro **state**. De ahí debe ser derigido al endpoint de esta app **/mercadolibre/auth**
+
+Se almacenarán las credenciales del usuario de MELI y el ID del usuario de Chattin. Se hace fetch a todos los productos del usuario y se lo redirige a chatting con su ID de chatting, su ID de MELI y sus productos.
 
 ## Installation
 
+Asegurarse de levantar una instancia de MongoDB y una instancia de Redis, y proporcionar las siguientes variables de entorno:
+
 ```bash
-$ npm install
+
+MONGODB_URI=
+
+MELI_SECRET=
+
+MELI_CLIENT_ID=
+
+MELI_REDIRECT_URI=
+
+MELI_BASE_URL=https://api.mercadolibre.com
+
+SIGNATURE_KEY=
+
+RETRY_INTERVAL_MS=1000
+
+MAX_RETRIES=7
+
+CHATTIN=https://hurt-step-production.up.railway.app/
+
+ENCRYPTION_KEY=
+
+REDIS_PRIVATE_URL=
+```
+
+Luego podemos instalar las dependencias desde el directorio root de la aplicación:
+
+```bash
+
+$  npm  install
+
 ```
 
 ## Running the app
 
 ```bash
+
 # development
-$ npm run start
+
+$  npm  run  start
+
+
 
 # watch mode
-$ npm run start:dev
+
+$  npm  run  start:dev
+
+
 
 # production mode
-$ npm run start:prod
+
+$  npm  run  build
+$  npm  run  start:prod
 ```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).

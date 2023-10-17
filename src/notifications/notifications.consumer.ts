@@ -76,7 +76,7 @@ export class NotificationsConsumer {
       try {
         const { data, user } = await this.mercadolibreService.fetchUserResource(resource, String(user_id));
 
-        console.log('Cambio en item!', data);
+        console.log('Cambio en item!');
 
         break;
       } catch (error) {
