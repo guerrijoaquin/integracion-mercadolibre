@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, Post, Res, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
 import { Response } from 'express';
 import { RealIP } from 'nestjs-real-ip';

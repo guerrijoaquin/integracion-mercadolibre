@@ -1,7 +1,6 @@
-import { Controller, Get, Query, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, Res } from '@nestjs/common';
 import { MercadolibreService } from './mercadolibre.service';
 import { AuthUserQueryFTDto } from './dtos/AuthUserQueryFT.dto';
-import { IsAuthorizedGuard } from 'src/common/guards/IsAuthorized.guard';
 
 @Controller('mercadolibre')
 export class MercadolibreController {

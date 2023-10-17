@@ -1,12 +1,10 @@
-import { Processor, Process, OnQueueActive } from '@nestjs/bull';
+import { Processor, Process } from '@nestjs/bull';
 import { Job } from 'bull';
 import { MeliNotificationDto } from './dtos/MeliNotification.dto';
 import { ConfigService } from '@nestjs/config';
 import { MercadolibreService } from 'src/mercadolibre/mercadolibre.service';
-import { ChatAiService } from 'src/common/services/chatai.service';
+import { ChattinService } from 'src/common/services/chattin.service';
 import { NotificationDataDto } from './dtos/NotificationData.dto';
-import { randomBytes } from 'crypto';
-import { UsersService } from 'src/users/users.service';
 
 export enum TOPICS {
   QUESTIONS = 'questions',
@@ -22,7 +20,7 @@ export class NotificationsConsumer {
   constructor(
     private readonly config: ConfigService,
     private readonly mercadolibreService: MercadolibreService,
-    private readonly chatAiService: ChatAiService,
+    private readonly chattinService: ChattinService,
   ) {
     this.MAX_RETRIES = this.config.get('MAX_RETRIES');
     this.RETRY_INTERVAL_MS = this.config.get('RETRY_INTERVAL_MS');
@@ -107,7 +105,7 @@ export class NotificationsConsumer {
 
         console.log('PREGUNTA!', question);
 
-        // const response = await this.chatAiService.askChatAi({
+        // const response = await this.chattinService.askChattin({
         //   question,
         //   user_id: user.userId,
         // });

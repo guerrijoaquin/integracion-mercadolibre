@@ -140,7 +140,7 @@ export class MercadolibreService {
       const signed = sign(JSON.stringify(products), secret);
       // Decode: const result = verify(signed, secret);
 
-      //Send signed products to chatai
+      //Send signed products to chattin
 
       //Redirect user to
       return 'check console!';
