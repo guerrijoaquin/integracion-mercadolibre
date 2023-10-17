@@ -38,7 +38,7 @@ CHATTIN=https://hurt-step-production.up.railway.app/
 
 ENCRYPTION_KEY=
 
-REDIS_PRIVATE_URL=
+REDIS_URL=
 ```
 
 Luego podemos instalar las dependencias desde el directorio root de la aplicación:

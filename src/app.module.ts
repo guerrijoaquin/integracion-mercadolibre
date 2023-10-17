@@ -15,7 +15,7 @@ import { BullModule } from '@nestjs/bull';
       envFilePath: '.env',
     }),
     BullModule.forRoot({
-      url: process.env.REDIS_PRIVATE_URL,
+      url: process.env.REDIS_URL,
     }),
     MongooseModule.forRoot(process.env.MONGODB_URI),
     HttpModule,
