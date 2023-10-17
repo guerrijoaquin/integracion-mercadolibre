@@ -76,7 +76,7 @@ export class NotificationsService {
       try {
         const { data, user } = await this.mercadolibreService.fetchUserResource(resource, String(user_id));
 
-        console.log('Cambio en item!');
+        console.log('Cambio en item!', data);
 
         break;
       } catch (error) {
@@ -99,7 +99,9 @@ export class NotificationsService {
       attemp++;
       try {
         const { data, user } = await this.mercadolibreService.fetchUserResource(resource, String(user_id));
-        // if (data?.answer?.text) break;
+
+        if (data?.answer?.text) break;
+
         const questionId = data.id;
         const question = data.text;
 
