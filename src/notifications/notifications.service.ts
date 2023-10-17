@@ -30,7 +30,7 @@ export class NotificationsService {
 
   handleNotification({ topic, resource, user_id, attempts }: MeliNotificationDto) {
     if (attempts > 1) return;
-    console.log(`Notification received to user: ${user_id} for resource ${resource}`);
+    console.log(`${topic} received to user: ${user_id} for resource ${resource}`);
     switch (topic) {
       case TOPICS.QUESTIONS:
         return this.handleQuestion({ resource, user_id });
