@@ -11,7 +11,7 @@ export class NotificationsService {
   ) {}
 
   async handleNotification(data: MeliNotificationDto) {
-    if (data.attempts > 1) return;
+    if (data?.attempts > 1) return;
     return await this.notificationsQueue.add('new', data);
   }
 }
