@@ -6,7 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { MercadolibreService } from 'src/mercadolibre/mercadolibre.service';
 import { ChatAiService } from 'src/common/services/chatai.service';
 
-enum TOPICS {
+export enum TOPICS {
   QUESTIONS = 'questions',
   ORDERS_CREATED = 'created_orders',
   ORDERS = 'orders',
@@ -29,6 +29,8 @@ export class NotificationsService {
   }
 
   handleNotification({ topic, resource, user_id }: MeliNotificationDto) {
+    if (!Object.values(TOPICS).includes(topic)) return console.error(`Unsupported topic: ${topic}`);
+
     const handler = {
       [TOPICS.QUESTIONS]: this.handleQuestion({ resource, user_id }),
       [TOPICS.ITEMS]: this.handleItems({ resource, user_id }),
@@ -36,7 +38,7 @@ export class NotificationsService {
       [TOPICS.ORDERS]: this.handleOrders({ resource, user_id }),
     };
 
-    return handler[topic]();
+    return handler[String(topic)]();
   }
 
   async handleOrders({ resource, user_id }: NotificationDataDto) {
@@ -46,7 +48,7 @@ export class NotificationsService {
       try {
         const { data, user } = await this.mercadolibreService.fetchUserResource(resource, String(user_id));
 
-        console.log('PRODUCTO NUEVO!');
+        console.log('VENTA NUEVA!');
 
         break;
       } catch (error) {
