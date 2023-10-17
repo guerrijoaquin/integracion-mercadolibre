@@ -29,16 +29,19 @@ export class NotificationsService {
   }
 
   handleNotification({ topic, resource, user_id }: MeliNotificationDto) {
-    if (!Object.values(TOPICS).includes(topic)) return console.error(`Unsupported topic: ${topic}`);
-
-    const handler = {
-      [TOPICS.QUESTIONS]: this.handleQuestion({ resource, user_id }),
-      [TOPICS.ITEMS]: this.handleItems({ resource, user_id }),
-      [TOPICS.ORDERS_CREATED]: this.handleOrders({ resource, user_id }),
-      [TOPICS.ORDERS]: this.handleOrders({ resource, user_id }),
-    };
-
-    return handler[String(topic)]();
+    console.log(`Resource: ${resource}`);
+    switch (topic) {
+      case TOPICS.QUESTIONS:
+        return this.handleQuestion({ resource, user_id });
+      case TOPICS.ITEMS:
+        return this.handleItems({ resource, user_id });
+      case TOPICS.ORDERS_CREATED:
+        return this.handleOrders({ resource, user_id });
+      case TOPICS.ORDERS:
+        return this.handleOrders({ resource, user_id });
+      default:
+        return console.error(`Unsupported topic: ${topic}`);
+    }
   }
 
   async handleOrders({ resource, user_id }: NotificationDataDto) {
