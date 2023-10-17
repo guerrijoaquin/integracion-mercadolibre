@@ -28,8 +28,9 @@ export class NotificationsService {
     this.RETRY_INTERVAL_MS = this.config.get('RETRY_INTERVAL_MS');
   }
 
-  handleNotification({ topic, resource, user_id }: MeliNotificationDto) {
-    console.log(`Resource: ${resource}`);
+  handleNotification({ topic, resource, user_id, attempts }: MeliNotificationDto) {
+    if (attempts > 1) return;
+    console.log(`Notification received to user: ${user_id} for resource ${resource}`);
     switch (topic) {
       case TOPICS.QUESTIONS:
         return this.handleQuestion({ resource, user_id });
