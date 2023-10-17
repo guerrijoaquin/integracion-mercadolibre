@@ -1,4 +1,4 @@
-import { TOPICS } from '../notifications.service';
+import { TOPICS } from '../notifications.consumer';
 
 export interface MeliNotificationDto {
   _id: string;

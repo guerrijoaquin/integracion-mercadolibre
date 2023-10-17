@@ -7,8 +7,8 @@ export class NotificationsController {
   constructor(private readonly notificationsService: NotificationsService) {}
 
   @Post()
-  receiveNotification(@Body() payload, @Res() res: Response) {
-    res.status(200).send('Ok');
-    this.notificationsService.handleNotification(payload);
+  async receiveNotification(@Body() payload, @Res() res: Response) {
+    await this.notificationsService.handleNotification(payload);
+    return res.status(200).send('Ok');
   }
 }

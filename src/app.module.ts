@@ -7,14 +7,18 @@ import { MercadolibreModule } from './mercadolibre/mercadolibre.module';
 import { UsersModule } from './users/users.module';
 import { HttpModule } from '@nestjs/axios';
 import { NotificationsModule } from './notifications/notifications.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '.env',
     }),
-    HttpModule,
+    BullModule.forRoot({
+      url: 'redis://default:DPErJDTSvqUAWRnN9FuO@containers-us-west-145.railway.app:5743',
+    }),
     MongooseModule.forRoot(process.env.MONGODB_URI),
+    HttpModule,
     UsersModule,
     MercadolibreModule,
     NotificationsModule,

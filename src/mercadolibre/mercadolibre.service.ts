@@ -9,7 +9,7 @@ import { RefreshMELITokenDTO } from './dtos/RefreshMELIToken.dto';
 import { ML_AUTH_REQUIRED } from 'src/common/constants/error-codes.constants';
 import { MeliItemsPage } from './dtos/MeliItemsPage.interface';
 import { MeliItem } from './dtos/MeliItem.interface';
-import { decode, sign, verify } from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 import { FetchUserResourceDto } from './dtos/FetchUserRes.dto';
 import { SendAnswerDto } from './dtos/SendAnswer.dto';
 import { Response } from 'express';
@@ -135,7 +135,7 @@ export class MercadolibreService {
       });
 
       const products = await this.getAllProducts(user);
-      console.log('products', products)
+      console.log('products', products);
       const secret = this.config.get('SIGNATURE_KEY');
       const signed = sign(JSON.stringify(products), secret);
       // Decode: const result = verify(signed, secret);
@@ -150,8 +150,10 @@ export class MercadolibreService {
   }
 
   private async getValidTokenForUser(user: User): Promise<string | null> {
-    if (!this.isTokenExpired(user.MLTokenTimestamp)) return user.MLToken;
-    if (!this.isRefreshTokenExpired(user.MLRefreshTokenTimestamp)) return this.refreshToken(user);
+    let token;
+    if (!this.isTokenExpired(user.MLTokenTimestamp)) token = user.MLToken;
+    else if (!this.isRefreshTokenExpired(user.MLRefreshTokenTimestamp)) token = this.refreshToken(user);
+    if (token) return await this.usersService.decodeString(token);
     throw new UnauthorizedException(`${ML_AUTH_REQUIRED}=${user.userId}`);
   }
 

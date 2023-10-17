@@ -40,6 +40,4 @@ export class User extends Document {
   MLRefreshTokenTimestamp: Date;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User).on('update', () => {
-  console.log('DOCUMENT UPDATED!');
-});
+export const UserSchema = SchemaFactory.createForClass(User);
