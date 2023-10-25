@@ -27,9 +27,12 @@ export class ChattinService {
 
   async signUpUser(data: ChattinSignupDto) {
     const signed = this.signPayload(data);
+    const payload = {
+      data: signed,
+    };
     const {
       data: { response },
-    } = await lastValueFrom(this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/create-website`, signed));
+    } = await lastValueFrom(this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/create-website`, payload));
     return response;
   }
 
