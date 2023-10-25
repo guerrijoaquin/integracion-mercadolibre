@@ -141,7 +141,7 @@ export class MercadolibreService {
       const products = await this.getAllProducts(user);
 
       const chattinData: ChattinSignupDto = {
-        mercadoLibreId: MLUserID,
+        MLUserId: MLUserID,
         userId,
         products,
       };
