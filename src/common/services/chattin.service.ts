@@ -26,9 +26,8 @@ export class ChattinService {
   }
 
   async signUpUser(data: ChattinSignupDto) {
-    const signed = this.signPayload(data);
     const payload = {
-      data: signed,
+      data: this.signPayload(data),
     };
     const {
       data: { response },
@@ -37,18 +36,22 @@ export class ChattinService {
   }
 
   async updateUser(data: ChattinSignupDto) {
-    const signed = this.signPayload(data);
+    const payload = {
+      data: this.signPayload(data),
+    };
     const {
       data: { response },
-    } = await lastValueFrom(this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/edit-website`, signed));
+    } = await lastValueFrom(this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/edit-website`, payload));
     return response;
   }
 
   async askChatAi(data: ChattinQuestion) {
-    const signed = this.signPayload(data);
+    const payload = {
+      data: this.signPayload(data),
+    };
     const {
       data: { response },
-    } = await lastValueFrom(this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/create-website`, signed));
+    } = await lastValueFrom(this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/create-website`, payload));
     return response;
   }
 
