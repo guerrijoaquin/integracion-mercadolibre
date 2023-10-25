@@ -10,7 +10,7 @@ export class NotificationsController {
 
   @Post()
   async receiveNotification(@RealIP() ip: string, @Body() payload, @Res() res: Response) {
-    if (!this.MELI_IPS.includes(ip)) throw new UnauthorizedException(`Unknow IP: ${ip}`);
+    // if (!this.MELI_IPS.includes(ip)) throw new UnauthorizedException(`Unknow IP: ${ip}`);
     await this.notificationsService.handleNotification(payload);
     return res.status(200).send('Ok');
   }
