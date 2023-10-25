@@ -105,11 +105,13 @@ export class NotificationsConsumer {
 
         console.log('PREGUNTA!', question);
 
-        // const response = await this.chattinService.askChattin({
-        //   question,
-        //   user_id: user.userId,
-        // });
-        const response = 'respuesta de chati';
+        const response = await this.chattinService.askChatAi({
+          question,
+          userId: user.userId,
+          MLUserId: user.MLUserID,
+        });
+
+        console.log('respuesta de chattin', response);
 
         await this.mercadolibreService.answerQuestion(
           {

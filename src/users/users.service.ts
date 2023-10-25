@@ -6,6 +6,13 @@ import { CreateUserDto } from './dtos/CreateUser.dto';
 import { UpdateUserDto } from './dtos/UpdateUser.dto';
 import { ConfigService } from '@nestjs/config';
 import * as CryptoJS from 'crypto-js';
+import { CreateUserResponse } from './dtos/CreateUserResponse';
+
+export enum AccountActions {
+  CREATE = 'CREATE',
+  UPDATE = 'UPDATE',
+}
+
 @Injectable()
 export class UsersService {
   private ENCRYPTION_KEY;
@@ -17,7 +24,7 @@ export class UsersService {
     this.ENCRYPTION_KEY = this.configService.get('ENCRYPTION_KEY');
   }
 
-  async create(data: CreateUserDto) {
+  async create(data: CreateUserDto): Promise<CreateUserResponse> {
     try {
       data.MLToken = await this.encodeString(data.MLToken);
       data.MLRefreshToken = await this.encodeString(data.MLRefreshToken);
@@ -26,9 +33,12 @@ export class UsersService {
         MLTokenTimestamp: new Date(),
         MLRefreshTokenTimestamp: new Date(),
       });
-      return user;
+      return { user, action: AccountActions.CREATE };
     } catch (error) {
-      if (error?.code === 11000) return this.updateByUserId(data.userId, data);
+      if (error?.code === 11000) {
+        const user = await this.updateByUserId(data.userId, data);
+        return { user, action: AccountActions.UPDATE };
+      }
       console.log(error);
       throw new InternalServerErrorException();
     }

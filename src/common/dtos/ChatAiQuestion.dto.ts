@@ -1,4 +1,5 @@
 export interface ChattinQuestion {
-  user_id: string;
+  userId: string;
   question: string;
+  MLUserId: string;
 }

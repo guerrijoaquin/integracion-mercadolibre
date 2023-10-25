@@ -9,13 +9,15 @@ import { RefreshMELITokenDTO } from './dtos/RefreshMELIToken.dto';
 import { ML_AUTH_REQUIRED } from 'src/common/constants/error-codes.constants';
 import { MeliItemsPage } from './dtos/MeliItemsPage.interface';
 import { MeliItem } from './dtos/MeliItem.interface';
-import { sign } from 'jsonwebtoken';
 import { FetchUserResourceDto } from './dtos/FetchUserRes.dto';
 import { SendAnswerDto } from './dtos/SendAnswer.dto';
 import { Response } from 'express';
+import { ChattinService } from 'src/common/services/chattin.service';
+import { ChattinSignupDto } from 'src/common/dtos/ChattinSignup.dto';
 
 @Injectable()
 export class MercadolibreService {
+  CHATTIN_FRONT_URL: string;
   MELI_BASE_URL: string;
   MELI_AUTH_URL =
     'auth.mercadolibre.com.ar/authorization?response_type=code&client_id=1128712925782425&redirect_uri=http://localhost:3000/mercadolibre/auth&state=iddelusuario';
@@ -23,8 +25,10 @@ export class MercadolibreService {
     private readonly httpService: HttpService,
     private readonly config: ConfigService,
     private usersService: UsersService,
+    private readonly chattinService: ChattinService,
   ) {
     this.MELI_BASE_URL = this.config.get('MELI_BASE_URL');
+    this.CHATTIN_FRONT_URL = this.config.get('CHATTIN_FRONT_URL');
   }
 
   async answerQuestion(data: SendAnswerDto, user: User) {
@@ -127,7 +131,7 @@ export class MercadolibreService {
       const MLToken = data.access_token;
       const MLRefreshToken = data.refresh_token;
 
-      const user = await this.usersService.create({
+      const { user, action } = await this.usersService.create({
         userId,
         MLRefreshToken,
         MLToken,
@@ -135,15 +139,16 @@ export class MercadolibreService {
       });
 
       const products = await this.getAllProducts(user);
-      console.log('products', products);
-      const secret = this.config.get('SIGNATURE_KEY');
-      const signed = sign(JSON.stringify(products), secret);
-      // Decode: const result = verify(signed, secret);
 
-      //Send signed products to chattin
+      const chattinData: ChattinSignupDto = {
+        mercadoLibreId: MLUserID,
+        userId,
+        products,
+      };
 
-      //Redirect user to
-      return 'check console!';
+      await this.chattinService.signUpOrUpdate({ data: chattinData, action });
+
+      return res.redirect(this.CHATTIN_FRONT_URL);
     } catch (error) {
       this.handleError(error);
     }
