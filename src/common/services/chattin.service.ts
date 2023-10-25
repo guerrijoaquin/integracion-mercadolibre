@@ -50,7 +50,7 @@ export class ChattinService {
     const {
       data: { response },
     } = await lastValueFrom(
-      this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/create-website`, { data: signed }),
+      this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/response`, { data: signed }),
     );
     return response;
   }
