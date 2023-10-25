@@ -7,6 +7,8 @@ import { sign } from 'jsonwebtoken';
 import { ChattinSignupDto } from '../dtos/ChattinSignup.dto';
 import { SignUpOrUpdateChattin } from '../dtos/SignUpOrUpdateChattin';
 import { AccountActions } from 'src/users/users.service';
+import { ItemEventDto } from '../dtos/ItemEvent.dto';
+import { OrderEventDto } from '../dtos/orderEvent.dto';
 
 @Injectable()
 export class ChattinService {
@@ -23,6 +25,26 @@ export class ChattinService {
   async signUpOrUpdate({ data, action }: SignUpOrUpdateChattin) {
     if (action === AccountActions.CREATE) return this.signUpUser(data);
     return this.updateUser(data);
+  }
+
+  async orderEvent(data: OrderEventDto) {
+    const signed = this.signPayload(data);
+    const {
+      data: { response },
+    } = await lastValueFrom(
+      this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/product-event`, { data: signed }),
+    );
+    return response;
+  }
+
+  async itemEvent(data: ItemEventDto) {
+    const signed = this.signPayload(data);
+    const {
+      data: { response },
+    } = await lastValueFrom(
+      this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/product-event`, { data: signed }),
+    );
+    return response;
   }
 
   async signUpUser(data: ChattinSignupDto) {

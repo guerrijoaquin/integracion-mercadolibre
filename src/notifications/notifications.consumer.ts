@@ -8,8 +8,8 @@ import { NotificationDataDto } from './dtos/NotificationData.dto';
 
 export enum TOPICS {
   QUESTIONS = 'questions',
-  ORDERS_CREATED = 'created_orders',
-  ORDERS = 'orders',
+  // ORDERS_CREATED = 'created_orders',
+  // ORDERS = 'orders',
   ITEMS = 'items',
 }
 
@@ -34,10 +34,10 @@ export class NotificationsConsumer {
         return this.handleQuestion({ resource, user_id });
       case TOPICS.ITEMS:
         return this.handleItems({ resource, user_id });
-      case TOPICS.ORDERS_CREATED:
-        return this.handleOrders({ resource, user_id });
-      case TOPICS.ORDERS:
-        return this.handleOrders({ resource, user_id });
+      // case TOPICS.ORDERS_CREATED:
+      //   return this.handleOrders({ resource, user_id });
+      // case TOPICS.ORDERS:
+      //   return this.handleOrders({ resource, user_id });
       default:
         return console.error(`Unsupported topic: ${topic}`);
     }
@@ -50,7 +50,11 @@ export class NotificationsConsumer {
       try {
         const { data, user } = await this.mercadolibreService.fetchUserResource(resource, String(user_id));
 
-        console.log('VENTA NUEVA!');
+        await this.chattinService.orderEvent({
+          order: data,
+          MLUserId: user.MLUserID,
+          userId: user.userId,
+        });
 
         break;
       } catch (error) {
@@ -74,7 +78,11 @@ export class NotificationsConsumer {
       try {
         const { data, user } = await this.mercadolibreService.fetchUserResource(resource, String(user_id));
 
-        console.log('Cambio en item!');
+        await this.chattinService.itemEvent({
+          item: data,
+          MLUserId: user.MLUserID,
+          userId: user.userId,
+        });
 
         break;
       } catch (error) {
