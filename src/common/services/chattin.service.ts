@@ -29,7 +29,7 @@ export class ChattinService {
     const signed = this.signPayload(data);
     const {
       data: { response },
-    } = await lastValueFrom(this.httpService.post(`${this.CHATTIN_API_URL}/create-website`, signed));
+    } = await lastValueFrom(this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/create-website`, signed));
     return response;
   }
 
@@ -37,7 +37,7 @@ export class ChattinService {
     const signed = this.signPayload(data);
     const {
       data: { response },
-    } = await lastValueFrom(this.httpService.post(`${this.CHATTIN_API_URL}/edi-website`, signed));
+    } = await lastValueFrom(this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/edi-website`, signed));
     return response;
   }
 
@@ -45,7 +45,7 @@ export class ChattinService {
     const signed = this.signPayload(data);
     const {
       data: { response },
-    } = await lastValueFrom(this.httpService.post(`${this.CHATTIN_API_URL}/create-website`, signed));
+    } = await lastValueFrom(this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/create-website`, signed));
     return response;
   }
 
