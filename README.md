@@ -19,25 +19,16 @@ Asegurarse de levantar una instancia de MongoDB y una instancia de Redis, y prop
 ```bash
 
 MONGODB_URI=
-
 MELI_SECRET=
-
 MELI_CLIENT_ID=
-
-MELI_REDIRECT_URI=
-
+MELI_REDIRECT_URI=http://localhost:3000/mercadolibre/auth
 MELI_BASE_URL=https://api.mercadolibre.com
-
 SIGNATURE_KEY=
-
 RETRY_INTERVAL_MS=1000
-
 MAX_RETRIES=7
-
-CHATTIN=https://hurt-step-production.up.railway.app/
-
+CHATTIN_FRONT_URL=
+CHATTIN_API_URL=
 ENCRYPTION_KEY=
-
 REDIS_URL=
 ```
 
