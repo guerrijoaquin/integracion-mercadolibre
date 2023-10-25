@@ -1,5 +1,5 @@
 export interface ChattinSignupDto {
   userId: string;
-  mercadoLibreId: string;
+  MLUserId: string;
   products: Array<any>;
 }
