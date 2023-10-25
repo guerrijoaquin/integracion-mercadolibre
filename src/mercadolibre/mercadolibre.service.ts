@@ -146,6 +146,8 @@ export class MercadolibreService {
         products,
       };
 
+      console.log('Sending: ', chattinData);
+
       await this.chattinService.signUpOrUpdate({ data: chattinData, action });
 
       return res.redirect(this.CHATTIN_FRONT_URL);

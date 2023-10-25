@@ -42,6 +42,7 @@ export const createNestServer = async (expressInstance) => {
 
   //TODO: handle 429 error
   //TODO: usar el param ?attributes=id,title para traer los campos necesarios de los articulos
+  //TODO: manejar error al linkear cuenta
 
   return app.init();
 };
