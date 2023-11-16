@@ -47,9 +47,11 @@ export class NotificationsConsumer {
   async handleQuestion({ resource, user_id }: NotificationDataDto) {
     let attemp = 0;
     console.log('handling pregunta!!')
+    console.log('max retries',  this.MAX_RETRIES)
     while (attemp <= this.MAX_RETRIES) {
       attemp++;
       try {
+        console.log('inside try')
         const { data, user } = await this.mercadolibreService.fetchUserResource(resource, String(user_id));
 
         console.log('data fechet: ', data)

@@ -47,7 +47,9 @@ export class MercadolibreService {
 
   async fetchUserResource(resource: string, user_id: string): Promise<FetchUserResourceDto> {
     const user = await this.usersService.findUserByMLUserID(user_id);
+    console.log('user', user)
     const token = await this.getValidTokenForUser(user);
+    console.log('token', token)
     const url = `${this.MELI_BASE_URL}${resource}`;
 
     const { data } = await lastValueFrom(
