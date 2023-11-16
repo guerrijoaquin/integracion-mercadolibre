@@ -29,7 +29,6 @@ export class NotificationsConsumer {
   @Process('new')
   async handleNotification({ data: { topic, resource, user_id } }: Job<MeliNotificationDto>) {
     console.log(`Handling queue event ${resource} for user ${user_id}`);
-    console.log('topic ', topic);
     switch (topic) {
       case TOPICS.QUESTIONS:
         return this.handleQuestion({ resource, user_id });
@@ -46,29 +45,21 @@ export class NotificationsConsumer {
 
   async handleQuestion({ resource, user_id }: NotificationDataDto) {
     let attemp = 0;
-    console.log('handling pregunta!!')
-    console.log('max retries',  this.MAX_RETRIES)
     while (attemp <= this.MAX_RETRIES) {
       attemp++;
       try {
-        console.log('inside try')
         const { data, user } = await this.mercadolibreService.fetchUserResource(resource, String(user_id));
 
-        console.log('data fechet: ', data)
         if (data?.answer?.text) break;
 
         const questionId = data.id;
         const question = data.text;
-
-        console.log('PREGUNTA!', question);
 
         const response = await this.chattinService.askChatAi({
           question,
           userId: user.userId,
           MLUserId: user.MLUserID,
         });
-
-        console.log('respuesta de chattin', response);
 
         await this.mercadolibreService.answerQuestion(
           {
