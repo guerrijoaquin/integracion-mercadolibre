@@ -68,13 +68,12 @@ export class ChattinService {
   }
 
   async askChatAi(data: ChattinQuestion) {
-    const signed = this.signPayload(data);
-    const {
-      data: { response },
-    } = await lastValueFrom(
-      this.httpService.post(`${this.CHATTIN_API_URL}/v1/mercado-libre/response`, { data: signed }),
-    );
-    return response;
+    // const signed = this.signPayload(data);
+    // const {
+    //   data: { response },
+    // } = await lastValueFrom(this.httpService.post(`${this.CHATTIN_API_URL}/create-website`, signed));
+    // return response;
+    return '¡Hola! Los auriculares tienen una potencia máxima de 90 dB. Esta respuesta fue generada con IA. Si no estás conforme con la respuesta, envíala nuevamente agregando la palabra ignoreia al final de tu respuesta. Muchas Gracias.'
   }
 
   private signPayload = (payload: any) => sign(JSON.stringify(payload), this.SIGNATURE_KEY);

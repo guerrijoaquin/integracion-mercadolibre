@@ -8,8 +8,8 @@ import { NotificationDataDto } from './dtos/NotificationData.dto';
 
 export enum TOPICS {
   QUESTIONS = 'questions',
-  // ORDERS_CREATED = 'created_orders',
-  // ORDERS = 'orders',
+  ORDERS_CREATED = 'created_orders',
+  ORDERS = 'orders',
   ITEMS = 'items',
 }
 
@@ -29,17 +29,63 @@ export class NotificationsConsumer {
   @Process('new')
   async handleNotification({ data: { topic, resource, user_id } }: Job<MeliNotificationDto>) {
     console.log(`Handling queue event ${resource} for user ${user_id}`);
+    console.log('topic ', topic);
     switch (topic) {
       case TOPICS.QUESTIONS:
         return this.handleQuestion({ resource, user_id });
       case TOPICS.ITEMS:
         return this.handleItems({ resource, user_id });
-      // case TOPICS.ORDERS_CREATED:
-      //   return this.handleOrders({ resource, user_id });
-      // case TOPICS.ORDERS:
-      //   return this.handleOrders({ resource, user_id });
+      case TOPICS.ORDERS_CREATED:
+        return this.handleOrders({ resource, user_id });
+      case TOPICS.ORDERS:
+        return this.handleOrders({ resource, user_id });
       default:
         return console.error(`Unsupported topic: ${topic}`);
+    }
+  }
+
+  async handleQuestion({ resource, user_id }: NotificationDataDto) {
+    let attemp = 0;
+    while (attemp <= this.MAX_RETRIES) {
+      attemp++;
+      try {
+        const { data, user } = await this.mercadolibreService.fetchUserResource(resource, String(user_id));
+
+        if (data?.answer?.text) break;
+
+        const questionId = data.id;
+        const question = data.text;
+
+        console.log('PREGUNTA!', question);
+
+        const response = await this.chattinService.askChatAi({
+          question,
+          userId: user.userId,
+          MLUserId: user.MLUserID,
+        });
+
+        console.log('respuesta de chattin', response);
+
+        await this.mercadolibreService.answerQuestion(
+          {
+            question_id: questionId,
+            text: response,
+          },
+          user,
+        );
+
+        break;
+      } catch (error) {
+        const errorMessage = error?.response?.data?.error;
+        const excludeErrors = ['not_unanswered_question', 'forbidden', 'not_found'];
+        if (excludeErrors.includes(errorMessage)) break;
+        if (attemp <= this.MAX_RETRIES) await new Promise((resolve) => setTimeout(resolve, this.RETRY_INTERVAL_MS));
+        else {
+          console.error(`Could not perfom handleQuestion after ${attemp} attemps`);
+          console.error(`On resource: ${resource}`);
+          console.error(`Exiting with error: ${error}`);
+        }
+      }
     }
   }
 
@@ -92,51 +138,6 @@ export class NotificationsConsumer {
         if (attemp <= this.MAX_RETRIES) await new Promise((resolve) => setTimeout(resolve, this.RETRY_INTERVAL_MS));
         else {
           console.error(`Could not perfom handleItems after ${attemp} attemps`);
-          console.error(`On resource: ${resource}`);
-          console.error(`Exiting with error: ${error}`);
-        }
-      }
-    }
-  }
-
-  async handleQuestion({ resource, user_id }: NotificationDataDto) {
-    let attemp = 0;
-    while (attemp <= this.MAX_RETRIES) {
-      attemp++;
-      try {
-        const { data, user } = await this.mercadolibreService.fetchUserResource(resource, String(user_id));
-
-        if (data?.answer?.text) break;
-
-        const questionId = data.id;
-        const question = data.text;
-
-        console.log('PREGUNTA!', question);
-
-        const response = await this.chattinService.askChatAi({
-          question,
-          userId: user.userId,
-          MLUserId: user.MLUserID,
-        });
-
-        console.log('respuesta de chattin', response);
-
-        await this.mercadolibreService.answerQuestion(
-          {
-            question_id: questionId,
-            text: response,
-          },
-          user,
-        );
-
-        break;
-      } catch (error) {
-        const errorMessage = error?.response?.data?.error;
-        const excludeErrors = ['not_unanswered_question', 'forbidden', 'not_found'];
-        if (excludeErrors.includes(errorMessage)) break;
-        if (attemp <= this.MAX_RETRIES) await new Promise((resolve) => setTimeout(resolve, this.RETRY_INTERVAL_MS));
-        else {
-          console.error(`Could not perfom handleQuestion after ${attemp} attemps`);
           console.error(`On resource: ${resource}`);
           console.error(`Exiting with error: ${error}`);
         }
