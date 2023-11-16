@@ -29,6 +29,7 @@ export class NotificationsConsumer {
   @Process('new')
   async handleNotification({ data: { topic, resource, user_id } }: Job<MeliNotificationDto>) {
     console.log(`Handling queue event ${resource} for user ${user_id}`);
+    console.log('topic ', topic);
     switch (topic) {
       case TOPICS.QUESTIONS:
         return this.handleQuestion({ resource, user_id });
