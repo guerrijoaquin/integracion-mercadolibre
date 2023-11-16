@@ -46,11 +46,13 @@ export class NotificationsConsumer {
 
   async handleQuestion({ resource, user_id }: NotificationDataDto) {
     let attemp = 0;
+    console.log('handling pregunta!!')
     while (attemp <= this.MAX_RETRIES) {
       attemp++;
       try {
         const { data, user } = await this.mercadolibreService.fetchUserResource(resource, String(user_id));
 
+        console.log('data fechet: ', data)
         if (data?.answer?.text) break;
 
         const questionId = data.id;
