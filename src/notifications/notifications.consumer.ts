@@ -81,6 +81,7 @@ export class NotificationsConsumer {
         break;
       } catch (error) {
         const errorMessage = error?.response?.data?.error;
+        console.log('ERROR!',  errorMessage)
         const excludeErrors = ['not_unanswered_question', 'forbidden', 'not_found'];
         if (excludeErrors.includes(errorMessage)) break;
         if (attemp <= this.MAX_RETRIES) await new Promise((resolve) => setTimeout(resolve, this.RETRY_INTERVAL_MS));
