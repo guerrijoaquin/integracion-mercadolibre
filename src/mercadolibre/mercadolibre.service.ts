@@ -51,6 +51,8 @@ export class MercadolibreService {
     const token = await this.getValidTokenForUser(user);
     console.log('token', token)
     const url = `${this.MELI_BASE_URL}${resource}`;
+    console.log('url', url)
+
 
     const { data } = await lastValueFrom(
       this.httpService.get(url, {
